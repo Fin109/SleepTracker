@@ -7,13 +7,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['PLOTTING']=False
 
-print(os.getenv('DATABASE'))
-
 # Start login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Start MongoDB Atlas
+print(type(os.getenv('DATABASE'))
 client = pymongo.MongoClient(os.getenv('DATABASE'))
 db = client.user_login
 
