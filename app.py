@@ -49,6 +49,7 @@ def login_or_register():
         pw_entered = request.form.get('user_pw')
 
         if request.form.get('login'): # Log in logic
+            print("ATTEMPT LOGIN!!!!!!!!!!!!!!")
             user = db.users.find_one({'username':name_entered})
             if user and User.check_password(user['password'],pw_entered):
                 usr_obj = User(username=user['username'])
