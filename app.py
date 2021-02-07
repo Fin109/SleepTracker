@@ -3,7 +3,7 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 import os, pymongo, json
 import sys
 
-print(sys.version_info[0])
+print(sys.version_info)
 # Instantiate Flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
