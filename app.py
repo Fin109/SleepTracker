@@ -14,7 +14,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Start MongoDB Atlas
-print(type(os.getenv('DATABASE'))
+print(type(os.getenv('DATABASE')))
 client = pymongo.MongoClient(os.getenv('DATABASE'))
 db = client.user_login
 
