@@ -51,10 +51,12 @@ def login_or_register():
         if request.form.get('login'): # Log in logic
             print("ATTEMPT LOGIN!!!!!!!!!!!!!!")
             user = db.users.find_one({'username':name_entered})
+            print("attempt login again!")
             if user and User.check_password(user['password'],pw_entered):
                 usr_obj = User(username=user['username'])
                 login_user(usr_obj)
                 app.config['user'] = user
+                print("returning!!!!!")
                 return redirect(url_for('main'))
             else:
                 return redirect(url_for('login'))
