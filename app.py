@@ -16,6 +16,7 @@ login_manager.init_app(app)
 # Start MongoDB Atlas
 print(type(os.getenv('DATABASE')))
 client = pymongo.MongoClient(os.getenv('DATABASE'))
+print(client)
 db = client.user_login
 
 # Define user class
@@ -51,7 +52,7 @@ def login_or_register():
         if request.form.get('login'): # Log in logic
             print("ATTEMPT LOGIN!!!!!!!!!!!!!!")
             user = db.users.find_one({'username':name_entered})
-            print("attempt login again!")
+            print("attempt login again!",user)
             if user and User.check_password(user['password'],pw_entered):
                 usr_obj = User(username=user['username'])
                 login_user(usr_obj)
