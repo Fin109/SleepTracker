@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Login or register here to track your sleep!</h2>
+<form action="" method="POST">
+  <ul>
+    <li> 
+      <label for="username">Username:</label>
+	  <input type="text" id="name" name="user_name">
+    </li>
+    <li>
+      <label for="password">Password:</label>
+	  <input type="password" id="password" name="user_pw">
+    </li>
+    <li class = "button">
+      <input type="submit" name='login' value='Login'>
+	  <input type="submit" name='register' value='Register'>
+    </li>
+  </ul>
+</form>
+{% endblock %}
+

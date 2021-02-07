@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<h2>Hey, {{user['username']}}! Let's track your sleep.</h2>
+<form action="" method="POST">
+  <ul>
+    <li> 
+      <label for="time">Time Slept (hours):</label>
+	  <input type="text" id="time" name="time">
+    </li>
+    <li>
+      <label for="date">Date:</label>
+	  <input type="date" id="date" name="date"
+	  		 value="">
+    </li>
+    <li class = "button">
+      <input type="submit" name='submit' value='Submit'>
+	  <input type="submit" name='graph' value='View Graph'>
+	  <input type="submit" name='logout' value='Logout'>
+    </li>
+  </ul>
+</form>
+
+{% if plot %}
+<div id="graph">
+    <script>
+    	var x = {{user['date'] | safe}};
+    	var y = {{user['time'] | safe}};
+
+    var trace1 = {
+	  x: x,
+	  y: y,
+	  type: 'bar'
+	};
+
+	var data = [trace1];
+
+	Plotly.newPlot('graph', data);
+    </script>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
