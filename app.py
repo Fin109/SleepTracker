@@ -52,7 +52,6 @@ def main():
 
 # When functionality for submit, logout, plot buttons
 @app.route('/main', methods=['POST'])
-@login_required
 def submit_logout_plot():
     if request.method == 'POST':
         print("submitted something in main")
