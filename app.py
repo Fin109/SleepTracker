@@ -58,9 +58,9 @@ def login_or_register():
                 login_user(usr_obj)
                 app.config['user'] = user
                 print("returning!!!!!")
-                return redirect(url_for('main'))
+                return redirect(url_for('/main'))
             else:
-                return redirect(url_for('login'))
+                return redirect(url_for('index'))
 
         elif request.form.get('register'): # Register logic
             new_user = {'username':name_entered,'password':pw_entered}
