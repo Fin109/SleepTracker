@@ -47,7 +47,7 @@ def login():
 def main():
     print('in main')
     # if app.config['plotting'] == True, user has clicked "view graph"
-    return render_template('static/main.html',user=app.config['user'],plot=app.config['PLOTTING'])
+    return render_template('main.html',user=app.config['user'],plot=app.config['PLOTTING'])
 
 
 # When functionality for submit, logout, plot buttons
@@ -86,7 +86,7 @@ def login_or_register():
                 login_user(usr_obj)
                 app.config['user'] = user
                 print("returning!!!!!")
-                return redirect(url_for('/main'))
+                return redirect(url_for('main'))
             else:
                 return redirect(url_for('index'))
 
