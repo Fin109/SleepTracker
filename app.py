@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
-import os, pymongo, json
-import sys
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
+import os, pymongo, json, os
 
-print(sys.version_info)
+
 # Instantiate Flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -14,9 +13,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Start MongoDB Atlas
-print(type(os.getenv('DATABASE')))
-client = pymongo.MongoClient(os.getenv('DATABASE'))
-print(client)
+client = os.getenv('DATABASE')
+
 db = client.user_login
 
 # Define user class
@@ -43,9 +41,29 @@ class User(UserMixin):
 def login():
 	return render_template('login.html')
 
+@app.route('/', methods = ['POST'])
+def login_or_register():
+    if request.method == 'POST':
+        name_entered = request.form.get('user_name')
+        pw_entered = request.form.get('user_pw')
+
+        if request.form.get('login'): # Log in logic
+            user = db.users.find_one({'username':name_entered})
+
+            if user and User.check_password(user['password'],pw_entered):
+                usr_obj = User(username=user['username'])
+                login_user(usr_obj)
+                app.config['user'] = user
+                return redirect(url_for('main'))
+            else:
+                return redirect(url_for('index'))
+
+        elif request.form.get('register'): # Register logic
+            new_user = {'username':name_entered,'password':pw_entered}
+            db.users.insert_one(new_user) # insert new user to db
+
 @app.route('/main')
 def main():
-    print('in main')
     # if app.config['plotting'] == True, user has clicked "view graph"
     return render_template('main.html',user=app.config['user'],plot=app.config['PLOTTING'])
 
@@ -54,7 +72,6 @@ def main():
 @app.route('/main', methods=['POST'])
 def submit_logout_plot():
     if request.method == 'POST':
-        print("submitted something in main")
 
         if request.form.get('submit'): # if submitting new sleep data
             time_entered = float(request.form.get('time'))
@@ -71,41 +88,14 @@ def submit_logout_plot():
     return redirect(url_for('main'))
 
 
-@app.route('/', methods = ['POST'])
-def login_or_register():
-    if request.method == 'POST':
-        name_entered = request.form.get('user_name')
-        pw_entered = request.form.get('user_pw')
-
-        if request.form.get('login'): # Log in logic
-            print("ATTEMPT LOGIN!!!!!!!!!!!!!!")
-            user = db.users.find_one({'username':name_entered})
-            print("attempt login again!",user)
-            if user and User.check_password(user['password'],pw_entered):
-                usr_obj = User(username=user['username'])
-                login_user(usr_obj)
-                app.config['user'] = user
-                print("returning!!!!!")
-                return redirect(url_for('main'))
-            else:
-                return redirect(url_for('index'))
-
-        elif request.form.get('register'): # Register logic
-            new_user = {'username':name_entered,'password':pw_entered}
-            db.users.insert_one(new_user) # insert new user to db
-            return redirect(url_for('login')) # redirect after register
-
-
 # add sleep data to MongoDB Atlas
 def add_sleep(time,date,user):
     if 'date' in user:
         user['date'].append(date)
         user['time'].append(time)
     else:
-        user['date'] = []
-        user['date'].append(date)
-        user['time'] = []
-        user['time'].append(time)
+        user['date'] = [date]
+        user['time'] = [time]
 
     db.users.update_one({'username':user['username']},
         {'$set':{'date':user['date'],
