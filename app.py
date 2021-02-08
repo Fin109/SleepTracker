@@ -71,6 +71,7 @@ def login_or_register():
 @app.route('/main')
 @login_required
 def main():
+    print('in main')
     # if app.config['plotting'] == True, user has clicked "view graph"
     return render_template('main.html',user=app.config['user'],plot=app.config['PLOTTING'])
 
@@ -95,6 +96,7 @@ def add_sleep(time,date,user):
 @login_required
 def submit_logout_plot():
     if request.method == 'POST':
+        print("submitted something in main")
 
         if request.form.get('submit'): # if submitting new sleep data
             time_entered = float(request.form.get('time'))
