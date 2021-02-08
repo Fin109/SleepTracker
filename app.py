@@ -43,6 +43,35 @@ class User(UserMixin):
 def login():
 	return render_template('login.html')
 
+@app.route('/main')
+def main():
+    print('in main')
+    # if app.config['plotting'] == True, user has clicked "view graph"
+    return render_template('static/main.html',user=app.config['user'],plot=app.config['PLOTTING'])
+
+
+# When functionality for submit, logout, plot buttons
+@app.route('/main', methods=['POST'])
+@login_required
+def submit_logout_plot():
+    if request.method == 'POST':
+        print("submitted something in main")
+
+        if request.form.get('submit'): # if submitting new sleep data
+            time_entered = float(request.form.get('time'))
+            date_entered = request.form.get('date')
+            add_sleep(time_entered,date_entered,app.config['user'])
+
+        if request.form.get('logout'):
+            logout_user()
+            app.config['PLOTTING'] = False
+            return 'You logged out!'
+        else:
+            app.config['PLOTTING'] = True
+
+    return redirect(url_for('main'))
+
+
 @app.route('/', methods = ['POST'])
 def login_or_register():
     if request.method == 'POST':
@@ -68,13 +97,6 @@ def login_or_register():
             return redirect(url_for('login')) # redirect after register
 
 
-@app.route('/main')
-@login_required
-def main():
-    print('in main')
-    # if app.config['plotting'] == True, user has clicked "view graph"
-    return render_template('main.html',user=app.config['user'],plot=app.config['PLOTTING'])
-
 # add sleep data to MongoDB Atlas
 def add_sleep(time,date,user):
     if 'date' in user:
@@ -89,28 +111,6 @@ def add_sleep(time,date,user):
     db.users.update_one({'username':user['username']},
         {'$set':{'date':user['date'],
         'time':user['time']}})
-
-
-# When functionality for submit, logout, plot buttons
-@app.route('/main', methods=['POST'])
-@login_required
-def submit_logout_plot():
-    if request.method == 'POST':
-        print("submitted something in main")
-
-        if request.form.get('submit'): # if submitting new sleep data
-            time_entered = float(request.form.get('time'))
-            date_entered = request.form.get('date')
-            add_sleep(time_entered,date_entered,app.config['user'])
-
-        if request.form.get('logout'):
-            logout_user()
-            app.config['PLOTTING'] = False
-            return 'You logged out!'
-        else:
-            app.config['PLOTTING'] = True
-
-    return redirect(url_for('main'))
     
 if __name__ == '__main__':
 	app.run(debug=True)
