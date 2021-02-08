@@ -60,6 +60,7 @@ def login_or_register():
         elif request.form.get('register'): # Register logic
             new_user = {'username':name_entered,'password':pw_entered}
             db.users.insert_one(new_user) # insert new user to db
+            return redirect(url_for('index'))
 
 @app.route('/main')
 def main():
