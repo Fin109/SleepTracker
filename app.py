@@ -95,7 +95,7 @@ def submit_sleep():
         if request.form.get('submit'): # if submitting new sleep data
             time_entered = float(request.form.get('time'))
             date_entered = request.form.get('date')
-            add_sleep(time_entered,date_entered,app.config['user'])
+            add_sleep(time_entered,date_entered,db.users.find_one({'username':current_user.get_id()}))
 
         if request.form.get('logout'):
             logout_user()
