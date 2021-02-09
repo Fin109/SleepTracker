@@ -4,15 +4,20 @@ import os, pymongo
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] ='adssad'
 app.config['plotting']=False
 
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+for root, dirs, files in os.walk(".", topdown=False):
+   for name in files:
+      print(os.path.join(root, name), 'FILES')
+   for name in dirs:
+      print(os.path.join(root, name), 'DIRS')
 #Database
-client = pymongo.MongoClient(os.getenv('DATABASE'))
+client = pymongo.MongoClient("mongodb+srv://Fin:Sterling@cluster0.e2fw3.mongodb.net/user_login?retryWrites=true&w=majority")
 db = client.user_login
 
 
