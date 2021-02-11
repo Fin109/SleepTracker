@@ -50,7 +50,7 @@ class User(UserMixin):
 ## Login/Register page
 @app.route("/")
 def login():
-	return render_template("login.html")
+	return redirect(url_for('main.html'))
 
 
 @app.route("/", methods = ["POST"])
@@ -78,8 +78,7 @@ def login_or_register():
 # Page where user logs sleep
 @app.route("/main")
 def main():
-    user_data = db.users.find_one({'username':current_user.get_id()})
-    return render_template("main.html",user=user_data,plot=app.config['plotting'])
+    return render_template("main.html")
 
 
 # Function for adding sleep data
