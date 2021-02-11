@@ -6,7 +6,7 @@ import os, pymongo
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['plotting'] = False
-app.config["APPLICATION_ROOT"] = "/SleepTracker"
+app.config["APPLICATION_ROOT"] = "/git-source"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
