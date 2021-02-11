@@ -10,15 +10,6 @@ app.config["APPLICATION_ROOT"] = "/SleepTracker"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-for root, dirs, files in os.walk(".", topdown=False):
-   for name in files:
-      print(os.path.join(root, name), 'FILES')
-   for name in dirs:
-        print(os.path.join(root, name), 'DIRS')
-        if name == 'templates':
-            for root, dirs, files in os.walk("templates"):
-                print(files)
       
 #Database
 client = pymongo.MongoClient(os.getenv('DATABASE'))
@@ -50,8 +41,8 @@ class User(UserMixin):
 ## Login/Register page
 @app.route("/")
 def login():
-    print(os.getcwd())
-	return redirect(url_for('login'))
+	print(os.getcwd())
+	return redirect(url_for('main'))
 
 
 @app.route("/", methods = ["POST"])
