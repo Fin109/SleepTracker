@@ -10,15 +10,6 @@ app.config['plotting'] = False
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-for root, dirs, files in os.walk(".", topdown=False):
-   for name in files:
-      print(os.path.join(root, name), 'FILES')
-   for name in dirs:
-        print(os.path.join(root, name), 'DIRS')
-        if name == 'templates':
-            for root, dirs, files in os.walk("templates"):
-                print(files)
       
 #Database
 client = pymongo.MongoClient(os.getenv('DATABASE'))
@@ -50,7 +41,7 @@ class User(UserMixin):
 ## Login/Register page
 @app.route("/")
 def login():
-	return redirect(url_for('main.html'))
+	return redirect(url_for('main'))
 
 
 @app.route("/", methods = ["POST"])
@@ -78,7 +69,7 @@ def login_or_register():
 # Page where user logs sleep
 @app.route("/main")
 def main():
-    return render_template("main.html")
+    return render_template("main.html",user=False,plotting=False)
 
 
 # Function for adding sleep data
