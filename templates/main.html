@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% if user %}
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <h2>Hey, {{user['username']}}! Let's track your sleep.</h2>
 <form action="" method="POST">
@@ -21,7 +23,7 @@
     </li>
   </ul>
 </form>
-
+{% endif %}
 {% if plot %}
 <div id="graph">
     <script>

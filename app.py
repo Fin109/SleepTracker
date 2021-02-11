@@ -77,10 +77,8 @@ def login_or_register():
 
 # Page where user logs sleep
 @app.route("/main")
-@login_required
 def main():
-    user_data = db.users.find_one({'username':current_user.get_id()})
-    return render_template("main.html",user=user_data,plot=app.config['plotting'])
+    return render_template("main.html",user=False,plot=False)
 
 
 # Function for adding sleep data
