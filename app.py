@@ -50,7 +50,8 @@ class User(UserMixin):
 ## Login/Register page
 @app.route("/")
 def login():
-	return render_template("login.html")
+    print(os.getcwd())
+	return redirect(url_for('login'))
 
 
 @app.route("/", methods = ["POST"])
