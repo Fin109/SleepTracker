@@ -41,7 +41,8 @@ class User(UserMixin):
 ## Login/Register page
 @app.route("/")
 def login():
-	return redirect("https://www.google.com")
+	print('in log in')
+	return redirect(url_for('main'))
 
 
 @app.route("/", methods = ["POST"])
@@ -65,11 +66,11 @@ def login_or_register():
             db.users.insert_one(new_user) # insert new user to db
             return redirect(url_for('login')) # redirect after register
 
-
 # Page where user logs sleep
-@app.route("/main")
+@app.route('/main')
 def main():
-    return render_template("main.html",user=False,plot=False)
+	print('in main')
+	return render_template('main.html', user=False, plot=False)
 
 
 # Function for adding sleep data
