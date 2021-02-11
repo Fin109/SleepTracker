@@ -41,8 +41,7 @@ class User(UserMixin):
 ## Login/Register page
 @app.route("/")
 def login():
-	print(os.getcwd())
-	return redirect(url_for('main'))
+	return redirect("https://www.google.com")
 
 
 @app.route("/", methods = ["POST"])
