@@ -6,10 +6,19 @@ import os, pymongo
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['plotting'] = False
-
+app.config["APPLICATION_ROOT"] = "/SleepTracker"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+for root, dirs, files in os.walk(".", topdown=False):
+   for name in files:
+      print(os.path.join(root, name), 'FILES')
+   for name in dirs:
+        print(os.path.join(root, name), 'DIRS')
+        if name == 'templates':
+            for root, dirs, files in os.walk("templates"):
+                print(files)
       
 #Database
 client = pymongo.MongoClient(os.getenv('DATABASE'))
@@ -41,7 +50,7 @@ class User(UserMixin):
 ## Login/Register page
 @app.route("/")
 def login():
-	return redirect(url_for('main'))
+	return render_template("login.html")
 
 
 @app.route("/", methods = ["POST"])
@@ -68,8 +77,10 @@ def login_or_register():
 
 # Page where user logs sleep
 @app.route("/main")
+@login_required
 def main():
-    return render_template("main.html",user=False,plotting=False)
+    user_data = db.users.find_one({'username':current_user.get_id()})
+    return render_template("main.html",user=user_data,plot=app.config['plotting'])
 
 
 # Function for adding sleep data
